@@ -15,8 +15,7 @@ class EncryptionListController extends Controller
     public function __invoke(Request $request)
     {
         $list = [
-            'sha1',
-            'sha256'
+            'AES-256-CBC'
         ];
         
         return $list;

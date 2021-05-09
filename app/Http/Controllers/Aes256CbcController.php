@@ -6,7 +6,12 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
-class Sha256Controller extends Controller
+const ALLOWED_PARAMETERS = [
+    'token',
+    'decrypt'
+];
+
+class Aes256CbcController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -18,13 +23,19 @@ class Sha256Controller extends Controller
      */
     public function __invoke(Request $request): string
     {
-        if (!$request->token) {
-            return 'No token provided. Please provide a string to encrypt.';
+        $parameters = $this->checkParameters($request);
+        if (!$parameters) {
+            return 'Invalid parameters passed: ' . $parameters;
         }
-        if ($request->decrypt) {
-            return $this->unHashString($request->token);
-        }
-        return $this->hashString($request->token);
+        $token = $request->token;
+        $decryptFlag = $request->decrypt;
+        if (!$token) return 'No token provided. Please provide a string to encrypt.';
+        if ($decryptFlag) return $this->unHashString($token);
+        return $this->hashString($token);
+    }
+
+    private function checkParameters($request) {
+        
     }
 
     /**
@@ -35,7 +46,7 @@ class Sha256Controller extends Controller
      * 
      * @author Moose <moosecodes@gmail.com>
      */
-    protected function hashString($token): string {
+    private function hashString($token): string {
         return $encryptedValue = Crypt::encryptString($token);
     }
 
@@ -47,7 +58,7 @@ class Sha256Controller extends Controller
      * 
      * @author Moose <moosecodes@gmail.com>
      */
-    protected function unHashString($encryptedValue): string {
+    private function unHashString($encryptedValue): string {
         try {
             $decrypted = Crypt::decryptString($encryptedValue);
         } catch (DecryptException $e) {}
