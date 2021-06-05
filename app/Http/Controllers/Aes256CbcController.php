@@ -23,19 +23,26 @@ class Aes256CbcController extends Controller
      */
     public function __invoke(Request $request): string
     {
-        $parameters = $this->checkParameters($request);
-        if (!$parameters) {
-            return 'Invalid parameters passed: ' . $parameters;
-        }
+        $params = $this->checkParameters($request);
+
+        if (!$params) return 'Invalid parameters passed: ' . $params;
+
         $token = $request->token;
         $decryptFlag = $request->decrypt;
+
         if (!$token) return 'No token provided. Please provide a string to encrypt.';
+
         if ($decryptFlag) return $this->unHashString($token);
+
         return $this->hashString($token);
     }
 
     private function checkParameters($request) {
-        
+        $params = [];
+        foreach($request as $p) {
+            $params[] = $p;
+        }
+        return $params;
     }
 
     /**

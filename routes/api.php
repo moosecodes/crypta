@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Sha1Controller;
 use App\Http\Controllers\Aes256CbcController;
+use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\EncryptionListController;
 
 /*
@@ -22,6 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/list', EncryptionListController::class);
+Route::get('/encryption/list', EncryptionListController::class)->name('encryptionlist');
 
-Route::post('/sha256', Aes256CbcController::class)->name('sha256');
+Route::post('/encryption/aes/256/cbc', Aes256CbcController::class)->name('aes256cbc');
+
+Route::post('/store/image', ImageUploadController::class)->name('imageupload');
