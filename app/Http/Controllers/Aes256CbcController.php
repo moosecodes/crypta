@@ -11,6 +11,11 @@ const ALLOWED_PARAMETERS = [
     'decrypt'
 ];
 
+const ERROR_STRINGS = [
+    'INVALID_PARAMS' => 'Invalid parameters passed: ',
+    'NO_TOKEN' => 'No token provided. Please provide a token/string to encrypt your string.',
+];
+
 class Aes256CbcController extends Controller
 {
     /**
@@ -25,12 +30,13 @@ class Aes256CbcController extends Controller
     {
         $params = $this->checkParameters($request);
 
-        if (!$params) return 'Invalid parameters passed: ' . $params;
+        if (!$params) return ERROR_STRINGS['INVALID_PARAMS'] . $params;
 
         $token = $request->token;
+
         $decryptFlag = $request->decrypt;
 
-        if (!$token) return 'No token provided. Please provide a string to encrypt.';
+        if (!$token) return ERROR_STRINGS['NO_TOKEN'];
 
         if ($decryptFlag) return $this->unHashString($token);
 
@@ -67,7 +73,9 @@ class Aes256CbcController extends Controller
      */
     private function unHashString($encryptedValue): string {
         try {
+
             $decrypted = Crypt::decryptString($encryptedValue);
+
         } catch (DecryptException $e) {}
 
         return $decrypted;

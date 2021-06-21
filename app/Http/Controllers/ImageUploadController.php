@@ -10,6 +10,7 @@ class ImageUploadController extends Controller
     public function __invoke(Request $request)
     {
         $path = '';
+        
         if($request->image && $request->file('image')->isValid()) {
             $path = $request->image->store('images');
             // Cache::store('redis')->put('current_image_name', $path, 600); // 10 Minutes
