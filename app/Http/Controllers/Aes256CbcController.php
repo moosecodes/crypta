@@ -23,7 +23,7 @@ class Aes256CbcController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     * 
+     *
      * @author Moose <moosecodes@gmail.com>
      */
     public function __invoke(Request $request): string
@@ -56,7 +56,7 @@ class Aes256CbcController extends Controller
      *
      * @param string $token
      * @return string
-     * 
+     *
      * @author Moose <moosecodes@gmail.com>
      */
     private function hashString($token): string {
@@ -68,7 +68,7 @@ class Aes256CbcController extends Controller
      *
      * @param string $encryptedValue
      * @return string
-     * 
+     *
      * @author Moose <moosecodes@gmail.com>
      */
     private function unHashString($encryptedValue): string {
