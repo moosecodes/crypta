@@ -14,10 +14,7 @@ class EncryptionListController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $list = [
-            'AES-256-CBC'
-        ];
-        
+        $list = openssl_get_cipher_methods();
         return $list;
     }
 }
