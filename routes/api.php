@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Sha1Controller;
-use App\Http\Controllers\Aes256CbcController;
+use App\Http\Controllers\StringEncryptionController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\EncryptionListController;
 
@@ -23,8 +23,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/encryption/list', EncryptionListController::class)->name('encryptionlist');
+Route::post('/encryption', StringEncryptionController::class)->name('encryptionDefaultRoute');
 
-Route::post('/encryption/aes/256/cbc', Aes256CbcController::class)->name('aes256cbc');
+Route::get('/encryption/list', EncryptionListController::class)->name('encryptionList');
+Route::get('/encryption/encrypt', [StringEncryptionController::class, 'encrypt'])->name('encrypt');
+Route::get('/encryption/decrypt', [StringEncryptionController::class, 'decrypt'])->name('decrypt');
+Route::get('/generate/private-key', [StringEncryptionController::class, 'genPrivateKey'])->name('genPrivateKey');
 
-Route::post('/store/image', ImageUploadController::class)->name('imageupload');
+Route::post('/upload/image', ImageUploadController::class)->name('imageUpload');
