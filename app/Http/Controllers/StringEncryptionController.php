@@ -46,9 +46,9 @@ class StringEncryptionController extends Controller
                     $response = [
                         'cipher' => $cipher,
                         'encrypted_text' => $encrypted,
-                        'iv' => base64_encode($iv),
-                        'key' => base64_encode($key),
                         'original_text' => $text,
+                        'iv_base64' => base64_encode($iv),
+                        'passphrase_base64' => base64_encode($key),
                     ];
                 } else {
                     $encrypted = openssl_encrypt($text, $cipher, "session('key')");
@@ -66,19 +66,16 @@ class StringEncryptionController extends Controller
     }
 
     protected function decrypt(Request $request) {
-        dd($request->has('cipher'));
-         // if(strlen($encrypted == 0) || strlen($cipher) == 0 || strlen($key) == 0 || strlen($iv)){
-        //     return 'Missing parameters';
-        // }
-        if($request->has('cipher') && $request->has('text')) {
-            $cipher = $request->input('cipher');
-            $text = base64_decode($request->input('text'));
-            $key = base64_decode($request->input('key'));
-            $iv = base64_decode($request->input('iv'));
-            $decrypted = openssl_decrypt($text, $cipher, $key, $options = 0, $iv);
-            return $decrypted;
+        if($request->has('data')) {
+            $data = json_decode($request->input('data'), true);
+            $cipher = $data['cipher'];
+            $encrypted_text = base64_decode($data['encrypted_text']);
+            $key = base64_decode($data['passphrase_base64']);
+            $iv = base64_decode($data['iv_base64']);
+            echo openssl_decrypt($encrypted_text, $cipher, $key);
+            // return openssl_decrypt($encrypted_text, $cipher, $key);
         }
-        return 'missing parameters!';
+        return "no freakin' data";
     }
 
     protected function genPrivateKey() {
