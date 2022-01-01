@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+// Add the messages public channel
+Broadcast::channel('messages', function() {
+    return true;
+});
