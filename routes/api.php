@@ -27,7 +27,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/encryption', StringEncryptionController::class)->name('encryptionDefaultRoute');
 
 Route::get('/encryption/list', EncryptionListController::class)->name('encryptionList');
-Route::get('/encryption/encrypt', [StringEncryptionController::class, 'encrypt'])->name('encrypt');
+Route::post('/encryption/encrypt', [StringEncryptionController::class, 'encrypt'])->name('encrypt');
 // Route::post('/encryption/decrypt', [StringEncryptionController::class, 'decrypt'])->name('decrypt');
 // Route::get('/generate/private-key', [StringEncryptionController::class, 'genPrivateKey'])->name('genPrivateKey');
 // Route::post('/upload/image', ImageUploadController::class)->name('imageUpload');
