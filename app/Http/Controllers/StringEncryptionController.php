@@ -66,6 +66,7 @@ class StringEncryptionController extends Controller
     }
 
     protected function decrypt(Request $request) {
+        echo $request->getContent();
         if($request->has('data')) {
             $data = json_decode($request->input('data'), true);
             $cipher = $data['cipher'];
@@ -73,7 +74,7 @@ class StringEncryptionController extends Controller
             $key = base64_decode($data['passphrase_base64']);
             $iv = base64_decode($data['iv_base64']);
             echo openssl_decrypt($encrypted_text, $cipher, $key);
-            // return openssl_decrypt($encrypted_text, $cipher, $key);
+            return openssl_decrypt($encrypted_text, $cipher, $key);
         }
         return "no freakin' data";
     }
