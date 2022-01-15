@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Routing\ResponseFactory;
 
 class EncryptionListController extends Controller
 {
@@ -15,6 +16,16 @@ class EncryptionListController extends Controller
     public function __invoke(Request $request)
     {
         $list = openssl_get_cipher_methods();
-        return $list;
+        $response = [];
+
+        for($i = 0; $i < count($list); $i++) {
+            $response[$i]['method'] = [$list[$i]];
+            $response[$i]['passphrase'] = false;
+            
+            if(openssl_cipher_iv_length($list[$i]) > 0){
+                $response[$i]['passphrase'] = true;
+            }
+        }
+        return response()->json($response);
     }
 }
