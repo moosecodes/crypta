@@ -21,7 +21,7 @@ class EncryptionListController extends Controller
         for($i = 0; $i < count($list); $i++) {
             $response[$i]['method'] = [$list[$i]];
             $response[$i]['passphrase'] = false;
-            var_dump($response[$i]['method']);
+            var_dump($response[$i]['method'][0]);
             if(openssl_cipher_iv_length($list[$i]) > 0){
                 $response[$i]['passphrase'] = true;
             }
