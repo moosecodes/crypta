@@ -15,14 +15,15 @@ class EncryptionListController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $list = openssl_get_cipher_methods();
+        $ciphers = openssl_get_cipher_methods();
         $response = [];
 
-        for($i = 0; $i < count($list); $i++) {
-            $response[$i]['method'] = [$list[$i]];
+
+        for($i = 0; $i < count($ciphers); $i++) {
+            $response[$i]['method'] = [$ciphers[$i]];
             $response[$i]['passphrase'] = false;
-            var_dump($response[$i]['method'][0]);
-            if(openssl_cipher_iv_length($list[$i]['method'][0]) > 0){
+
+            if(isset($ciphers[$i]['method'])){
                 $response[$i]['passphrase'] = true;
             }
         }
