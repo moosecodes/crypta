@@ -22,32 +22,35 @@ class InputStringsController extends Controller
     }
 
     private function processData($data, $method) {
-        $key_length = openssl_cipher_iv_length($method);
-
-        if($key_length > 0) {
-            $key = openssl_random_pseudo_bytes($key_length);
-            $iv_length = openssl_cipher_iv_length($method);
-            $iv = openssl_random_pseudo_bytes($iv_length);
-            $encrypted = openssl_encrypt($data, $method, $key, $options = 0, $iv, $tag);
-            return [
-                'cipher' => $method,
-                'algorithm' => $method,
-                'original_text' => $data,
-                'encrypted_text' => $encrypted,
-                'iv_base64' => base64_encode($iv),
-                'passphrase_base64' => base64_encode($key),
-            ];
-        } else {
-            $passphrase = "moosecodes-passphrase";
-            $encrypted = openssl_encrypt($data, $method, $passphrase);
-            return [
-                'cipher' => $method,
-                'algorithm' => $method,
-                'original_text' => $data,
-                'encrypted_text' => $encrypted,
-                'passphrase' => $passphrase
-            ];
+        try {
+            $key_length = openssl_cipher_iv_length($method);
+            if($key_length > 0) {
+                $key = openssl_random_pseudo_bytes($key_length);
+                $iv_length = openssl_cipher_iv_length($method);
+                $iv = openssl_random_pseudo_bytes($iv_length);
+                $encrypted = openssl_encrypt($data, $method, $key, $options = 0, $iv, $tag);
+                return [
+                    'cipher' => $method,
+                    'algorithm' => $method,
+                    'original_text' => $data,
+                    'encrypted_text' => $encrypted,
+                    'iv_base64' => base64_encode($iv),
+                    'passphrase_base64' => base64_encode($key),
+                ];
+            }
+        } catch(Exception $e) {
+            var_dump($e);
         }
+
+        $passphrase = "moosecodes-passphrase";
+        $encrypted = openssl_encrypt($data, $method, $passphrase);
+        return [
+            'cipher' => $method,
+            'algorithm' => $method,
+            'original_text' => $data,
+            'encrypted_text' => $encrypted,
+            'passphrase' => $passphrase
+        ];
     }
 
     private function save($response) {
