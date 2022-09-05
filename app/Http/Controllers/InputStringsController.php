@@ -22,10 +22,8 @@ class InputStringsController extends Controller
     }
 
     private function processData($data, $method) {
-        Log::info('This is some useful information.');
-        Log::info($method);
         $key_length = openssl_cipher_iv_length($method);
-        
+
         if($key_length > 0) {
             $key = openssl_random_pseudo_bytes($key_length);
             $iv_length = openssl_cipher_iv_length($method);
