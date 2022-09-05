@@ -22,8 +22,8 @@ class InputStringsController extends Controller
     }
 
     private function processData($data, $method) {
-        print("moose");
-        print($method);
+        Log::info('This is some useful information.');
+        Log::info($method);
         $key_length = openssl_cipher_iv_length($method);
         
         if($key_length > 0) {
