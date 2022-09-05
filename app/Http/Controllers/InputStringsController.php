@@ -22,7 +22,7 @@ class InputStringsController extends Controller
     }
 
     private function processData($data, $method) {
-        var_dump($method);
+        error_log($method);
         $key_length = openssl_cipher_iv_length($method);
         
         if($key_length > 0) {
