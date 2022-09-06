@@ -62,9 +62,6 @@ class InputStringsController extends Controller
         $input->iv_base64 = $response['iv_base64'] ?? null;
         $input->passphrase_base64 = $response['passphrase_base64'] ?? null;
         $input->save();
-        var_dump('!!!!!!!');
-        var_dump('!!!!!!!');
-        var_dump('!!!!!!!');
     }
 
     /**
